@@ -1,0 +1,37 @@
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/constraintLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/app_icon"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_margin="@dimen/padding_10"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:src="@drawable/ic_adb_black_24dp"/>
+
+    <TextView
+        android:id="@+id/app_neme"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/bottom_sheet_behavior"
+        android:padding="@dimen/padding_5"
+        app:layout_constraintLeft_toRightOf="@id/app_icon"
+        app:layout_constraintTop_toTopOf="@id/app_icon"
+        android:textColor="@color/black_one"
+        android:textSize="@dimen/textsize_14"/>
+
+    <TextView
+        android:id="@+id/app_version"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/padding_5"
+        app:layout_constraintLeft_toRightOf="@id/app_icon"
+        app:layout_constraintBottom_toBottomOf="@id/app_icon"
+        android:text="版本号"/>
+</android.support.constraint.ConstraintLayout>

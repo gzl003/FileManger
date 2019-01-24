@@ -1,0 +1,29 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.lhy.filemanager.fragment.AppFragment">
+
+    <TextView
+        android:id="@+id/applist"
+        style="@style/menu_item"
+        android:text="查看应用列表" />
+
+    <View style="@style/menu_item_line" />
+
+    <TextView
+        style="@style/menu_item"
+        android:text="查看应用列表" />
+
+    <View style="@style/menu_item_line" />
+
+
+    <TextView
+        style="@style/menu_item"
+        android:text="查看应用列表" />
+
+    <View style="@style/menu_item_line" />
+
+
+</LinearLayout>
