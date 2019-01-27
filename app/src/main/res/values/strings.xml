@@ -12,4 +12,5 @@
     <string name="string_copy">复制</string>
     <string name="string_cutting">剪切</string>
     <string name="string_paste">粘贴</string>
+    <string name="create_file">新建</string>
 </resources>

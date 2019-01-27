@@ -17,7 +17,7 @@ import com.lhy.filemanager.R;
 public class WelcomeActivity extends AppCompatActivity {
 
     public static final int START_DELAY = 200;
-    public static final int DURATION = 3000;
+    public static final int DURATION = 2000;
 
     private ImageView anim_img;
     private TextView text_welcome;
@@ -66,7 +66,7 @@ public class WelcomeActivity extends AppCompatActivity {
                         startActivity(new Intent(WelcomeActivity.this, MainActivity.class));
                         finish();
                     }
-                }, 3000);
+                }, 1500);
             }
 
             @Override

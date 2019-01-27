@@ -8,6 +8,7 @@ import android.widget.Toast;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -51,6 +52,44 @@ public class FileHelper {
             File file = new File(sbFile.toString());
             if (!file.exists()) {
                 file.createNewFile();
+            }
+            return file;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * 创建文件夹
+     *
+     * @param filePath
+     * @param fileName
+     * @return
+     */
+    public static File newDir(String filePath, String fileName) {
+        if (filePath == null || filePath.length() == 0
+                || fileName == null || fileName.length() == 0) {
+            return null;
+        }
+        try {
+            //判断目录是否存在，如果不存在，递归创建目录
+            File dir = new File(filePath);
+            if (!dir.exists()) {
+                dir.mkdirs();
+            }
+
+            //组织文件路径
+            StringBuilder sbFile = new StringBuilder(filePath);
+            if (!filePath.endsWith("/")) {
+                sbFile.append("/");
+            }
+            sbFile.append(fileName);
+
+            //创建文件并返回文件对象
+            File file = new File(sbFile.toString());
+            if (!file.exists()) {
+                file.mkdir();
             }
             return file;
         } catch (Exception ex) {
@@ -138,11 +177,11 @@ public class FileHelper {
                 Log.e("--Method--", "Copy_Delete.deleteSingleFile: 删除单个文件" + filePath$Name + "成功！");
                 return true;
             } else {
-                Toast.makeText(context, "删除单个文件" + filePath$Name + "失败！", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(context, "删除单个文件" + filePath$Name + "失败！", Toast.LENGTH_SHORT).show();
                 return false;
             }
         } else {
-            Toast.makeText(context, "删除单个文件失败：" + filePath$Name + "不存在！", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(context, "删除单个文件失败：" + filePath$Name + "不存在！", Toast.LENGTH_SHORT).show();
             return false;
         }
     }
@@ -160,7 +199,7 @@ public class FileHelper {
         File dirFile = new File(filePath);
         // 如果dir对应的文件不存在，或者不是一个目录，则退出
         if ((!dirFile.exists()) || (!dirFile.isDirectory())) {
-            Toast.makeText(context, "删除目录失败：" + filePath + "不存在！", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(context, "删除目录失败：" + filePath + "不存在！", Toast.LENGTH_SHORT).show();
             return false;
         }
         boolean flag = true;
@@ -181,16 +220,16 @@ public class FileHelper {
             }
         }
         if (!flag) {
-            Toast.makeText(context, "删除目录失败！", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(context, "删除目录失败！", Toast.LENGTH_SHORT).show();
             return false;
         }
         // 删除当前目录
         if (dirFile.delete()) {
             Log.e("--Method--", "Copy_Delete.deleteDirectory: 删除目录" + filePath + "成功！");
-            Toast.makeText(context, "删除" + filePath + "成功！", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(context, "删除" + filePath + "成功！", Toast.LENGTH_SHORT).show();
             return true;
         } else {
-            Toast.makeText(context, "删除目录：" + filePath + "失败！", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(context, "删除目录：" + filePath + "失败！", Toast.LENGTH_SHORT).show();
             return false;
         }
     }
@@ -361,20 +400,46 @@ public class FileHelper {
      * 搜索文件
      *
      * @param keyword
-     * @return
+     * @retur
      */
-    public static String searchFile(String keyword) {
+    public static String searchFile(String searchpath, String keyword) throws IOException {
         StringBuilder result = new StringBuilder();
-        File[] files = new File(GetFilesUtils.getInstance().getBasePath()).listFiles();
-        for (int i = 0; i < files.length; i++) {
-            File file = files[i];
-            if (file.getName().contains(keyword)) {
-                result.append(file.getPath()).append("\n").append("#").append(":");
+        File[] files = new File(searchpath).listFiles();
+
+        if (files.length > 0) {
+            result.append("搜索结果如下").append("\n");
+            for (int i = 0; i < files.length; i++) {
+                if (files[i].isDirectory() && !files[i].isHidden()) {
+                    File[] childfiles = new File(files[i].getPath()).listFiles();
+                    if (childfiles.length > 0) {
+                        for (int j = 0; j < childfiles.length; j++) {
+                            if (childfiles[j].isDirectory() && !childfiles[j].isHidden()) {
+                                File[] child = new File(childfiles[j].getPath()).listFiles();
+                                if (child.length > 0) {
+                                    for (int k = 0; k < child.length; k++) {
+                                        if (child[k].getName().contains(keyword)) {
+                                            result.append(child[k].getPath()).append("\n");
+                                        }
+                                    }
+                                }
+                            } else {
+                                if (childfiles[j].getName().contains(keyword)) {
+                                    result.append(childfiles[j].getPath()).append("\n");
+                                }
+                            }
+                        }
+                    }
+                } else {
+                    if (files[i].getName().contains(keyword)) {
+                        result.append(files[i].getPath()).append("\n");
+                    }
+                }
+            }
+            if (result.toString().equals("")) {
+                result = new StringBuilder("找不到文件!!");
             }
         }
-        if (result.toString().equals("")) {
-            result = new StringBuilder("找不到文件!!");
-        }
+
         return result.toString();
     }
 

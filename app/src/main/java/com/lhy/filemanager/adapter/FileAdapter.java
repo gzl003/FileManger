@@ -56,6 +56,15 @@ public class FileAdapter extends RecyclerView.Adapter {
                 //变暗的透明度(0-1)，0为完全透明
                 .setDimValue(0.4f)
                 .apply();
+        mCirclePop.findViewById(R.id.creatfile).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (ClickLisener != null) {
+                    ClickLisener.onCresteFile(filePath);
+                }
+                mCirclePop.dismiss();
+            }
+        });
         mCirclePop.findViewById(R.id.copy_tv).setOnClickListener(new View.OnClickListener() {
             /**
              * 复制
@@ -63,7 +72,7 @@ public class FileAdapter extends RecyclerView.Adapter {
              */
             @Override
             public void onClick(View v) {
-                tempfile.movieType = Tempfile.TYPE_COPY;
+                tempfile.moveType = Tempfile.TYPE_COPY;
                 tempfile.filePath = filePath;
                 Toast.makeText(mContext, "已复制", Toast.LENGTH_SHORT).show();
                 mCirclePop.dismiss();
@@ -75,7 +84,7 @@ public class FileAdapter extends RecyclerView.Adapter {
              */
             @Override
             public void onClick(View v) {
-                tempfile.movieType = Tempfile.TYPE_CUTTING;
+                tempfile.moveType = Tempfile.TYPE_CUTTING;
                 tempfile.filePath = filePath;
                 Toast.makeText(mContext, "已剪切", Toast.LENGTH_SHORT).show();
                 mCirclePop.dismiss();
@@ -87,7 +96,7 @@ public class FileAdapter extends RecyclerView.Adapter {
              */
             @Override
             public void onClick(View v) {
-                if (tempfile.movieType == Tempfile.TYPE_COPY) {//复制
+                if (tempfile.moveType == Tempfile.TYPE_COPY) {//复制
                     tempfile.newDirPath = newDirPath;
                     new AsyncTask<Void, Void, Object>() {
 
@@ -99,7 +108,12 @@ public class FileAdapter extends RecyclerView.Adapter {
 
                         @Override
                         protected Object doInBackground(Void... voids) {
-                            FileHelper.copyDir(tempfile.filePath, tempfile.newDirPath);
+                            if (tempfile.isDir) {
+                                FileHelper.copyDir(tempfile.filePath, tempfile.newDirPath);
+                            } else {
+                                FileHelper.copyFile(tempfile.filePath, tempfile.newDirPath);
+                            }
+
                             return null;
                         }
 
@@ -114,7 +128,7 @@ public class FileAdapter extends RecyclerView.Adapter {
                         }
                     }.execute();
                 }
-                if (tempfile.movieType == Tempfile.TYPE_CUTTING) {//剪切
+                if (tempfile.moveType == Tempfile.TYPE_CUTTING) {//剪切
                     tempfile.newDirPath = newDirPath;
                     new AsyncTask<Void, Void, Object>() {
 
@@ -126,7 +140,11 @@ public class FileAdapter extends RecyclerView.Adapter {
 
                         @Override
                         protected Object doInBackground(Void... voids) {
-                            FileHelper.moveDir(tempfile.filePath, tempfile.newDirPath);
+                            if (tempfile.isDir) {
+                                FileHelper.moveDir(tempfile.filePath, tempfile.newDirPath);
+                            } else {
+                                FileHelper.moveFile(tempfile.filePath, tempfile.newDirPath);
+                            }
                             return null;
                         }
 
@@ -138,6 +156,7 @@ public class FileAdapter extends RecyclerView.Adapter {
                                 ClickLisener.onRefash();
                             }
                             Toast.makeText(mContext, "粘贴成功", Toast.LENGTH_SHORT).show();
+                            tempfile = null;
                         }
                     }.execute();
                 }
@@ -178,6 +197,10 @@ public class FileAdapter extends RecyclerView.Adapter {
                 }
                 newDirPath = aList.get(position).get("fPath").toString();
                 filePath = aList.get(position).get("fPath").toString();
+                if (tempfile.moveType != Tempfile.TYPE_COPY && tempfile.moveType != Tempfile.TYPE_CUTTING) {
+                    tempfile.isDir = Boolean.parseBoolean(aList.get(position).get("fIsDir").toString());
+                }
+
                 /**
                  * 相对anchor view显示，适用 宽高不为match_parent
                  *
@@ -275,6 +298,8 @@ public class FileAdapter extends RecyclerView.Adapter {
         void onItemClick(String filepath);
 
         void onRefash();
+
+        void onCresteFile(String filepath);
     }
 
     public class Tempfile {
@@ -283,6 +308,7 @@ public class FileAdapter extends RecyclerView.Adapter {
 
         public String filePath;//原路径
         public String newDirPath;//目标路径
-        public int movieType = -1;//用于区分是复制还是剪切
+        public int moveType = -1;//用于区分是复制还是剪切
+        public boolean isDir;//用于区分文件文件夹
     }
 }

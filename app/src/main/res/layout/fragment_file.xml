@@ -22,13 +22,13 @@
                 android:id="@+id/findfile"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="根目录" />
+                android:text="刷新/目录" />
 
             <Button
-                android:id="@+id/creatfile"
+                android:id="@+id/creatdir"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="创建文件" />
+                android:text="创建文件夹" />
 
             <Button
                 android:id="@+id/searchfile"
@@ -81,7 +81,7 @@
                     android:paddingRight="@dimen/padding_10"
                     android:paddingTop="@dimen/padding_5"
                     android:textColor="@color/black_one"
-                    tools:text="当前文件" />
+                    tools:text="当前文件夹" />
 
             </RelativeLayout>
 
@@ -97,20 +97,15 @@
     <RelativeLayout
         android:id="@+id/scrollView"
         android:layout_width="wrap_content"
-        android:layout_height="260dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:background="@color/white"
         android:visibility="gone">
 
-        <ScrollView
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/search_result"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:id="@+id/search_result"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-        </ScrollView>
+            android:layout_height="match_parent" />
 
         <ImageView
             android:id="@+id/close_btn"
@@ -121,5 +116,11 @@
             android:src="@drawable/ic_close_black_24dp" />
     </RelativeLayout>
 
+    <ProgressBar
+        android:id="@+id/loading"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_centerInParent="true"
+        android:visibility="gone"/>
 
 </RelativeLayout>

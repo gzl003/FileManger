@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -21,6 +22,7 @@ import android.widget.Toast;
 
 import com.lhy.filemanager.R;
 import com.lhy.filemanager.adapter.FileAdapter;
+import com.lhy.filemanager.adapter.SearchResultAdapter;
 import com.lhy.filemanager.helper.DataCleanManager;
 import com.lhy.filemanager.helper.FileHelper;
 import com.lhy.filemanager.helper.GetFilesUtils;
@@ -38,15 +40,17 @@ import java.util.Map;
 public class FileFragment extends Fragment implements View.OnClickListener, FileAdapter.ItmeClickLisener {
     public static final int ACTION_ALERT_CREATE = 1;
     public static final int ACTION_ALERT_SEARCH = 2;
+    public static final int ACTION_ALERT_CREATDIR = 3;
+    private ProgressBar loading;
     private TextView current_files;
-    private TextView search_result;
     private RelativeLayout scrollView;
     private ImageView close_btn;
     private String baseFile;
-    private RecyclerView recyclerView;
+    private String creatfilePath;//新建文件的路径
     private AlertDialog dialog;
     private int alerttype = -1;
     private FileAdapter fileAdapter;
+    private SearchResultAdapter searchResultAdapter;
     private List<Map<String, Object>> aList = new ArrayList<>();
 
     /**
@@ -75,7 +79,7 @@ public class FileFragment extends Fragment implements View.OnClickListener, File
                 .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        final String key = et.getText().toString();
+                        final String key = et.getText().toString().trim();
                         if (!key.isEmpty()) {
                             dialog.dismiss();
                             if (alerttype == ACTION_ALERT_CREATE) {//创建文件
@@ -88,7 +92,7 @@ public class FileFragment extends Fragment implements View.OnClickListener, File
 
                                     @Override
                                     protected Object doInBackground(Void... voids) {
-                                        FileHelper.newFile(baseFile, key);
+                                        FileHelper.newFile(creatfilePath, key);
 
                                         return null;
                                     }
@@ -97,17 +101,54 @@ public class FileFragment extends Fragment implements View.OnClickListener, File
                                     protected void onPostExecute(Object obj) {
                                         super.onPostExecute(obj);
                                         try {
-                                            loadFolderList(baseFile);
+                                            current_files.setText(creatfilePath);
+                                            loadFolderList(creatfilePath);
                                             Toast.makeText(getActivity(), "创建" + key + "成功！", Toast.LENGTH_SHORT).show();
                                         } catch (IOException e) {
                                             e.printStackTrace();
                                         }
                                     }
                                 }.execute();
-
+                            }
+                            if (alerttype == ACTION_ALERT_CREATDIR) {
+                                if (FileHelper.newDir(current_files.getText().toString(), key) == null) {
+                                    Toast.makeText(getActivity(), "创建失败", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    Toast.makeText(getActivity(), "创建成功", Toast.LENGTH_SHORT).show();
+                                }
+                                try {
+                                    loadFolderList(current_files.getText().toString());
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
                             }
                             if (alerttype == ACTION_ALERT_SEARCH) {//搜索文件
-                                search_result.setText(FileHelper.searchFile(key));
+                                new AsyncTask<Void, Void, String>() {
+
+                                    @Override
+                                    protected void onPreExecute() {
+                                        super.onPreExecute();
+                                        loading.setVisibility(View.VISIBLE);
+                                    }
+
+                                    @Override
+                                    protected String doInBackground(Void... voids) {
+                                        try {
+                                            return FileHelper.searchFile(baseFile,key);
+                                        } catch (IOException e) {
+                                            e.printStackTrace();
+                                            return "找不到文件!!";
+                                        }
+                                    }
+
+                                    @Override
+                                    protected void onPostExecute(String obj) {
+                                        super.onPostExecute(obj);
+                                        searchResultAdapter.setResult(obj);
+                                        loading.setVisibility(View.GONE);
+                                    }
+                                }.execute();
+
                                 scrollView.setVisibility(View.VISIBLE);
                             }
                         } else {
@@ -130,19 +171,26 @@ public class FileFragment extends Fragment implements View.OnClickListener, File
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_file, container, false);
         view.findViewById(R.id.findfile).setOnClickListener(this);
-        view.findViewById(R.id.creatfile).setOnClickListener(this);
         view.findViewById(R.id.searchfile).setOnClickListener(this);
         view.findViewById(R.id.cleanfile).setOnClickListener(this);
         view.findViewById(R.id.back_btn).setOnClickListener(this);
+        view.findViewById(R.id.creatdir).setOnClickListener(this);
+        loading = (ProgressBar) view.findViewById(R.id.loading);
         current_files = (TextView) view.findViewById(R.id.current_files);
-        search_result = (TextView) view.findViewById(R.id.search_result);
         scrollView = (RelativeLayout) view.findViewById(R.id.scrollView);
         close_btn = (ImageView) view.findViewById(R.id.close_btn);
         close_btn.setOnClickListener(this);
-        recyclerView = (RecyclerView) view.findViewById(R.id.recyclerview);
+
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         fileAdapter = new FileAdapter(getActivity(), this);
         recyclerView.setAdapter(fileAdapter);
+
+        RecyclerView search_result = (RecyclerView) view.findViewById(R.id.search_result);
+        search_result.setLayoutManager(new LinearLayoutManager(getActivity()));
+        searchResultAdapter = new SearchResultAdapter(getActivity());
+        search_result.setAdapter(searchResultAdapter);
+
         try {
             loadFolderList(baseFile);
         } catch (IOException e) {
@@ -198,6 +246,7 @@ public class FileFragment extends Fragment implements View.OnClickListener, File
         } else {
             aList.clear();
         }
+        current_files.setText(file);
         fileAdapter.setaList(aList);
     }
 
@@ -212,8 +261,8 @@ public class FileFragment extends Fragment implements View.OnClickListener, File
                     e.printStackTrace();
                 }
                 break;
-            case R.id.creatfile:
-                alerttype = ACTION_ALERT_CREATE;
+            case R.id.creatdir:
+                alerttype = ACTION_ALERT_CREATDIR;
                 dialog.show();
                 break;
             case R.id.searchfile:
@@ -232,25 +281,27 @@ public class FileFragment extends Fragment implements View.OnClickListener, File
         }
     }
 
+    /**
+     * 返回上一级目录
+     */
     private void onbackFile() {
-        try {
-            current_files.setText(GetFilesUtils.getInstance().getParentPath(current_files.getText().toString()));
-            if (!current_files.getText().toString().isEmpty()) {
+        if (!current_files.getText().toString().isEmpty() && !current_files.getText().toString().equals(baseFile)) {
+            try {
                 String folder = GetFilesUtils.getInstance().getParentPath(current_files.getText().toString());
                 if (folder == null) {
-                    loadFolderList(baseFile);
+                    Toast.makeText(getActivity(), "刷新一下试试", Toast.LENGTH_SHORT).show();
                 } else if (folder.equals(current_files.getText().toString())) {
-                    loadFolderList(baseFile);
+                    Toast.makeText(getActivity(), "刷新一下试试", Toast.LENGTH_SHORT).show();
                 } else {
                     loadFolderList(folder);
                 }
-            } else if (aList.size() > 2) {
-                Toast.makeText(getActivity(), "已经到根目录了", Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(getActivity(), "刷新一下试试", Toast.LENGTH_SHORT).show();
+
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        } catch (IOException e) {
-            e.printStackTrace();
+        }
+        if (!current_files.getText().toString().isEmpty() && current_files.getText().toString().equals(baseFile)) {
+            Toast.makeText(getActivity(), "已经到根目录了，不能在返回了", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -279,5 +330,15 @@ public class FileFragment extends Fragment implements View.OnClickListener, File
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * 新建文件
+     */
+    @Override
+    public void onCresteFile(String filePath) {
+        this.creatfilePath = filePath;
+        alerttype = ACTION_ALERT_CREATE;
+        dialog.show();
     }
 }
