@@ -1,13 +1,125 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="horizontal"
     tools:context="com.lhy.filemanager.fragment.FileFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="文件管理" />
+        android:orientation="horizontal">
 
-</FrameLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:padding="@dimen/padding_10">
+
+            <Button
+                android:id="@+id/findfile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="根目录" />
+
+            <Button
+                android:id="@+id/creatfile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="创建文件" />
+
+            <Button
+                android:id="@+id/searchfile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="搜索文件" />
+
+            <Button
+                android:id="@+id/cleanfile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="清除缓存" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/back_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/ic_arrow_back_black_24dp"
+                    android:drawablePadding="@dimen/padding_5"
+                    android:gravity="center"
+                    android:paddingBottom="@dimen/padding_5"
+                    android:paddingLeft="@dimen/padding_5"
+                    android:paddingRight="@dimen/textsize_10"
+                    android:paddingTop="@dimen/padding_5" />
+
+                <TextView
+                    android:id="@+id/current_files"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_toRightOf="@id/back_btn"
+                    android:gravity="right"
+                    android:lines="1"
+                    android:padding="@dimen/padding_10"
+                    android:paddingBottom="@dimen/padding_5"
+                    android:paddingLeft="@dimen/padding_10"
+                    android:paddingRight="@dimen/padding_10"
+                    android:paddingTop="@dimen/padding_5"
+                    android:textColor="@color/black_one"
+                    tools:text="当前文件" />
+
+            </RelativeLayout>
+
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyclerview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/scrollView"
+        android:layout_width="wrap_content"
+        android:layout_height="260dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/white"
+        android:visibility="gone">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/search_result"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </ScrollView>
+
+        <ImageView
+            android:id="@+id/close_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:padding="@dimen/padding_10"
+            android:src="@drawable/ic_close_black_24dp" />
+    </RelativeLayout>
+
+
+</RelativeLayout>

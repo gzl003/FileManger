@@ -1,9 +1,13 @@
 package com.lhy.filemanager.helper;
 
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
+import android.net.Uri;
 
 import com.lhy.filemanager.modle.AppInfo;
 
@@ -40,7 +44,7 @@ public class AppHelper {
     }
 
     /**
-     * 获取飞系统应用
+     * 获取非系统应用
      *
      * @param mContext
      * @return
@@ -68,5 +72,27 @@ public class AppHelper {
         return appList;
     }
 
+    /**
+     * 卸载应用
+     *
+     * @param mContext
+     * @param packageName 应用包名
+     */
+    public static void removeApp(Context mContext, String packageName) {
+        Uri uri = Uri.parse("package:" + packageName);
+        Intent intent = new Intent(Intent.ACTION_DELETE, uri);
+        mContext.startActivity(intent);
+    }
 
+    /**
+     * 打开应用程序
+     * @param mContext
+     * @param packagename
+     */
+    public static void startAppWithPackageName(Context mContext, String packagename) {
+
+        Intent shortcutIntent = mContext.getPackageManager().
+                getLaunchIntentForPackage(packagename);
+        mContext.startActivity(shortcutIntent);
+    }
 }

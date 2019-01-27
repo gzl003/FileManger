@@ -4,6 +4,11 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="black_one">#111111</color>
-    <color name="gray_333333">#e2e2e2</color>
+    <color name="line_color">#e2e2e2</color>
+    <color name="gray_333333">#333333</color>
+    <color name="gray_666666">#666666</color>
+    <color name="gray_999999">#999999</color>
+    <color name="gray_dddddd">#dddddd</color>
+    <color name="white">#ffffff</color>
 
 </resources>

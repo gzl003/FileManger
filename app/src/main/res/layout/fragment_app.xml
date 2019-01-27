@@ -1,29 +1,30 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context="com.lhy.filemanager.fragment.AppFragment">
 
-    <TextView
-        android:id="@+id/applist"
-        style="@style/menu_item"
-        android:text="查看应用列表" />
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
 
-    <View style="@style/menu_item_line" />
+    <ProgressBar
+        android:id="@+id/progress"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        style="@style/menu_item"
-        android:text="查看应用列表" />
-
-    <View style="@style/menu_item_line" />
-
-
-    <TextView
-        style="@style/menu_item"
-        android:text="查看应用列表" />
-
-    <View style="@style/menu_item_line" />
+</android.support.constraint.ConstraintLayout>
 
 
-</LinearLayout>
+

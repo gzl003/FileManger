@@ -1,39 +1,33 @@
 package com.lhy.filemanager.fragment;
 
 import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.ProgressBar;
 
-import com.lhy.filemanager.MainActivity;
 import com.lhy.filemanager.R;
-import com.lhy.filemanager.activity.AppLlistActivity;
+import com.lhy.filemanager.adapter.AppsAdapter;
+import com.lhy.filemanager.helper.AppHelper;
+import com.lhy.filemanager.modle.AppInfo;
+
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class AppFragment extends Fragment {
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
 
-private Context mContext;
-    private TextView applist;
-
-
-
-
-
-
-
-
-    private String mParam1;
-    private String mParam2;
-
+    private Context mContext;
+    private RecyclerView recyclerview;
+    private AppsAdapter appsAdapter;
+    private ProgressBar progress;
+    private List<AppInfo> appInfos;
 
 
     /**
@@ -48,8 +42,8 @@ private Context mContext;
     public static AppFragment newInstance(String param1, String param2) {
         AppFragment fragment = new AppFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+//        args.putString(ARG_PARAM1, param1);
+//        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -57,10 +51,8 @@ private Context mContext;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+
+
     }
 
     @Override
@@ -68,14 +60,10 @@ private Context mContext;
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_app, container, false);
-        view.findViewById(R.id.applist).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(mContext, AppLlistActivity.class);
-                mContext.startActivity(intent);
-
-            }
-        });
+        recyclerview = (RecyclerView) view.findViewById(R.id.recyclerview);
+        progress = (ProgressBar) view.findViewById(R.id.progress);
+        recyclerview.setLayoutManager(new LinearLayoutManager(mContext));
+        initapps();
         return view;
     }
 
@@ -86,8 +74,42 @@ private Context mContext;
         this.mContext = context;
     }
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
+    private void initapps() {
+        AsyncTask<Void, Void, List<AppInfo>> asyncTask = new AsyncTask<Void, Void, List<AppInfo>>() {
+
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+                progress.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            protected List<AppInfo> doInBackground(Void... voids) {
+                return AppHelper.getUserApps(mContext);
+            }
+
+            @Override
+            protected void onPostExecute(List<AppInfo> apps) {
+                super.onPostExecute(apps);
+                appInfos = apps;
+                progress.setVisibility(View.GONE);
+                appsAdapter = new AppsAdapter(mContext, appInfos);
+                recyclerview.setAdapter(appsAdapter);
+            }
+        };
+        asyncTask.execute();
+    }
+
+    /**
+     * app卸载成功的回调
+     */
+    public void removeScuess(String pake) {
+        for (int i = 0; i < appInfos.size(); i++) {
+            if (pake.equals(appInfos.get(i).packageName)) {
+                appInfos.remove(i);
+                appsAdapter.setAppInfos(appInfos);
+                break;
+            }
+        }
     }
 }

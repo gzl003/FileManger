@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/pop_bg_shape"
+    android:elevation="@dimen/padding_10"
+    android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/copy_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/btn_bg_selector"
+        android:paddingBottom="@dimen/padding_10"
+        android:paddingLeft="@dimen/textsize_20"
+        android:paddingRight="@dimen/textsize_20"
+        android:paddingTop="@dimen/padding_10"
+        android:text="@string/string_copy"
+        android:textColor="@drawable/btn_text_selector"
+        android:textSize="@dimen/textsize_14" />
+
+    <TextView
+        android:id="@+id/cutting_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/btn_bg_selector"
+        android:paddingBottom="@dimen/padding_10"
+        android:paddingLeft="@dimen/textsize_20"
+        android:paddingRight="@dimen/textsize_20"
+        android:paddingTop="@dimen/padding_10"
+        android:text="@string/string_cutting"
+        android:textColor="@drawable/btn_text_selector"
+        android:textSize="@dimen/textsize_14" />
+
+    <TextView
+        android:id="@+id/paste_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/btn_bg_selector"
+        android:paddingBottom="@dimen/padding_10"
+        android:paddingLeft="@dimen/textsize_20"
+        android:paddingRight="@dimen/textsize_20"
+        android:paddingTop="@dimen/padding_10"
+        android:text="@string/string_paste"
+        android:textColor="@drawable/btn_text_selector"
+        android:textSize="@dimen/textsize_14" />
+
+</LinearLayout>

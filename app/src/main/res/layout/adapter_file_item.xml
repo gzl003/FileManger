@@ -1,6 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
 <com.lhy.filemanager.widget.SwipeMenuLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/constraintLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -13,44 +13,37 @@
     <RelativeLayout
         android:id="@+id/item_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:padding="@dimen/padding_5">
 
         <ImageView
-            android:id="@+id/app_icon"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_margin="@dimen/padding_10"
-            android:src="@drawable/ic_adb_black_24dp" />
+            android:id="@+id/folter_img"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/ic_folder_black_24dp" />
 
         <TextView
-            android:id="@+id/app_neme"
+            android:id="@+id/filesname"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignTop="@id/app_icon"
-            android:layout_toRightOf="@id/app_icon"
-            android:paddingLeft="@dimen/padding_10"
-            android:paddingRight="@dimen/padding_10"
+            android:layout_toRightOf="@id/folter_img"
+            android:lines="1"
+            android:paddingLeft="@dimen/padding_5"
+            android:paddingRight="@dimen/padding_5"
             android:text="@string/bottom_sheet_behavior"
             android:textColor="@color/black_one"
             android:textSize="@dimen/textsize_16" />
 
         <TextView
-            android:id="@+id/app_version"
+            android:id="@+id/filescount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/app_neme"
-            android:paddingTop="@dimen/padding_5"
-            android:layout_toRightOf="@id/app_icon"
-            android:paddingLeft="@dimen/padding_10"
-            android:paddingRight="@dimen/padding_10"
-            android:textSize="@dimen/textsize_14"
-            android:text="版本号" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_below="@id/app_icon"
-            android:background="@color/line_color"/>
+            android:layout_below="@id/filesname"
+            android:layout_toRightOf="@id/folter_img"
+            android:paddingLeft="@dimen/padding_5"
+            android:paddingRight="@dimen/padding_5"
+            android:text="文件夹、文件个数"
+            android:textSize="@dimen/textsize_12" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -66,5 +59,4 @@
             android:padding="@dimen/padding_20"
             android:src="@drawable/ic_delete_black_24dp" />
     </RelativeLayout>
-
 </com.lhy.filemanager.widget.SwipeMenuLayout>
