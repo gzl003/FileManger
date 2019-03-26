@@ -3,7 +3,6 @@ package com.lhy.filemanager.fragment;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -16,7 +15,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -134,7 +132,7 @@ public class FileFragment extends Fragment implements View.OnClickListener, File
                                     @Override
                                     protected String doInBackground(Void... voids) {
                                         try {
-                                            return FileHelper.searchFile(baseFile,key);
+                                            return FileHelper.searchFile(baseFile, key);
                                         } catch (IOException e) {
                                             e.printStackTrace();
                                             return "找不到文件!!";
@@ -170,11 +168,11 @@ public class FileFragment extends Fragment implements View.OnClickListener, File
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_file, container, false);
-        view.findViewById(R.id.findfile).setOnClickListener(this);
-        view.findViewById(R.id.searchfile).setOnClickListener(this);
-        view.findViewById(R.id.cleanfile).setOnClickListener(this);
+//        view.findViewById(R.id.findfile).setOnClickListener(this);
+//        view.findViewById(R.id.searchfile).setOnClickListener(this);
+//        view.findViewById(R.id.cleanfile).setOnClickListener(this);
         view.findViewById(R.id.back_btn).setOnClickListener(this);
-        view.findViewById(R.id.creatdir).setOnClickListener(this);
+//        view.findViewById(R.id.creatdir).setOnClickListener(this);
         loading = (ProgressBar) view.findViewById(R.id.loading);
         current_files = (TextView) view.findViewById(R.id.current_files);
         scrollView = (RelativeLayout) view.findViewById(R.id.scrollView);
@@ -250,28 +248,61 @@ public class FileFragment extends Fragment implements View.OnClickListener, File
         fileAdapter.setaList(aList);
     }
 
+    /**
+     * 刷新目录
+     */
+    public void refreshFile() {
+        try {
+            loadFolderList(baseFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 创建文件夹
+     */
+    public void creatFileDir() {
+        alerttype = ACTION_ALERT_CREATDIR;
+        dialog.show();
+    }
+
+    /**
+     * 搜索文件
+     */
+    public void searchFile() {
+        alerttype = ACTION_ALERT_SEARCH;
+        dialog.show();
+    }
+
+    /**
+     * 清除缓存
+     */
+    public void cleanfile() {
+        DataCleanManager.clearAllCache(getActivity());
+    }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.findfile:
-                try {
-                    loadFolderList(baseFile);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                break;
-            case R.id.creatdir:
-                alerttype = ACTION_ALERT_CREATDIR;
-                dialog.show();
-                break;
-            case R.id.searchfile:
-                alerttype = ACTION_ALERT_SEARCH;
-                dialog.show();
-                break;
-            case R.id.cleanfile:
-                DataCleanManager.clearAllCache(getActivity());
-                break;
+//            case R.id.findfile:
+//                try {
+//                    loadFolderList(baseFile);
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//                break;
+//            case R.id.creatdir:
+//                alerttype = ACTION_ALERT_CREATDIR;
+//                dialog.show();
+//                break;
+//            case R.id.searchfile:
+//                alerttype = ACTION_ALERT_SEARCH;
+//                dialog.show();
+//                break;
+//            case R.id.cleanfile:
+//                DataCleanManager.clearAllCache(getActivity());
+//                break;
             case R.id.back_btn:
                 onbackFile();
                 break;
