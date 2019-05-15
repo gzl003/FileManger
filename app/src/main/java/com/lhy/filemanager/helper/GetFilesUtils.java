@@ -4,6 +4,8 @@ package com.lhy.filemanager.helper;
  * Created by Administrator on 2019/1/26.
  */
 
+import android.os.Environment;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -15,14 +17,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import android.os.Environment;
-
 
 /**
  *  用于获取手机的文件夹及文件的工具类，如果权限允许，可以获取手机上任意路径的文件列表
  *  GetFilesUtils使用的是懒汉式单例模式，线程安全
- *  @author wuwang
- *  @since 2014.11
  *  
  */
 public class GetFilesUtils {
@@ -110,13 +108,14 @@ public class GetFilesUtils {
     /**
      *  获取文件pathStr文件夹下的文件列表
      *  @see #getSonNode(File)
-     *  @param pathStr 手机上的文件夹的绝对路径
-     *  @return pathStr文件夹下的文件列表的信息，信息存储在Map中，Map的key的列表如下：<br />
+     *
+     * @param pathStr 手机上的文件夹的绝对路径
+     * @return pathStr文件夹下的文件列表的信息，信息存储在Map中，Map的key的列表如下：<br />
      *  FILE_INFO_NAME : String 文件名称 <br />
      *  FILE_INFO_ISFOLDER: boolean 是否为文件夹  <br />
      *  FILE_INFO_TYPE: string 文件的后缀 <br />
      *  FILE_INFO_NUM_SONDIRS : int 子文件夹个数  <br />
-     *  FILE_INFO_NUM_SONFILES: int 子文件个数  <br />
+     * FILE_INFO_NUM_SONFILES: int 子文件个数  <br />
      *  FILE_INFO_PATH : String 文件的绝对路径 <br />
      *  
      **/
@@ -266,11 +265,11 @@ public class GetFilesUtils {
                 size = fis.available();
                 fis.close();
             } catch (FileNotFoundException e) {
-// TODO Auto-generated catch block 
+                // TODO Auto-generated catch block
                 e.printStackTrace();
                 return "未知大小";
             } catch (IOException e) {
-// TODO Auto-generated catch block 
+                // TODO Auto-generated catch block
                 e.printStackTrace();
                 return "未知大小";
             }
@@ -316,10 +315,8 @@ public class GetFilesUtils {
         Comparator<Map<String, Object>> order = new Comparator<Map<String, Object>>() {
 
             @Override
-
-
             public int compare(Map<String, Object> lhs, Map<String, Object> rhs) {
-// TODO Auto-generated method stub 
+                // TODO Auto-generated method stub
                 int left0 = lhs.get(orderBy0).equals(true) ? 0 : 1;
                 int right0 = rhs.get(orderBy0).equals(true) ? 0 : 1;
                 if (left0 == right0) {

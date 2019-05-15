@@ -7,38 +7,20 @@ import android.widget.Toast;
 
 import java.io.File;
 import java.math.BigDecimal;
+
 /**
  * Created by Administrator on 2019/1/26.
+ * <p>
+ * 缓存数据清除管理类
  */
-
 public class DataCleanManager {
 
 
-    public void clean(){
-        new AsyncTask<Void, Void, Void>() {
-            @Override
-            protected void onPreExecute() {
-
-            }
-
-            @Override
-            protected Void doInBackground(Void... params) {
-
-
-                return null;
-            }
-
-            @Override
-            protected void onPostExecute(Void result) {
-
-            }
-        }.execute();
-    }
     /**
      * 获取缓存大小
+     *
      * @param context
      * @return
-     * @throws Exception
      */
     public static String getTotalCacheSize(Context context) throws Exception {
         long cacheSize = getFolderSize(context.getCacheDir());
@@ -50,6 +32,7 @@ public class DataCleanManager {
 
     /**
      * 清除缓存
+     *
      * @param context
      */
     public static void clearAllCache(final Context context) {
@@ -58,7 +41,7 @@ public class DataCleanManager {
             @Override
             protected void onPreExecute() {
                 try {
-                    size[0] =  getTotalCacheSize(context);
+                    size[0] = getTotalCacheSize(context);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -76,7 +59,7 @@ public class DataCleanManager {
 
             @Override
             protected void onPostExecute(Void result) {
-                Toast.makeText(context, size[0],Toast.LENGTH_LONG).show();
+                Toast.makeText(context, size[0], Toast.LENGTH_LONG).show();
             }
         }.execute();
 
@@ -119,6 +102,7 @@ public class DataCleanManager {
 
     /**
      * 格式化单位
+     *
      * @param size
      * @return
      */

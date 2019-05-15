@@ -3,17 +3,12 @@ package com.lhy.filemanager.helper;
 
 import android.content.Context;
 import android.util.Log;
-import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Created by Administrator on 2019/1/26.
@@ -99,7 +94,7 @@ public class FileHelper {
     }
 
     /**
-     * 删除目录
+     * 删除指定目录
      *
      * @param filePath
      */
