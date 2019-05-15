@@ -3,7 +3,6 @@ package com.lhy.filemanager.adapter;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -15,9 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.lhy.filemanager.R;
-import com.lhy.filemanager.helper.AppHelper;
 import com.lhy.filemanager.helper.FileHelper;
-import com.lhy.filemanager.modle.AppInfo;
 import com.lhy.filemanager.widget.EasyPopup;
 import com.lhy.filemanager.widget.SwipeMenuLayout;
 import com.lhy.filemanager.widget.XGravity;
@@ -28,7 +25,7 @@ import java.util.Map;
 
 /**
  * Created by Administrator on 2019/1/26.
- * 文件夹的adapter
+ * 文件夹/文件的展示适配器adapter
  */
 public class FileAdapter extends RecyclerView.Adapter {
     private Context mContext;

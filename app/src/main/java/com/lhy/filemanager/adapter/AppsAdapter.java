@@ -18,8 +18,8 @@ import java.util.List;
 
 /**
  * Created by Administrator on 2019/1/25.
+ * 应用列表展示的适配器
  */
-
 public class AppsAdapter extends RecyclerView.Adapter {
 
     private Context mContext;
@@ -30,9 +30,13 @@ public class AppsAdapter extends RecyclerView.Adapter {
         this.appInfos = appInfos;
     }
 
+    /**
+     * 设置应用列表数据
+     * @param appInfos
+     */
     public void setAppInfos(List<AppInfo> appInfos) {
         this.appInfos = appInfos;
-        notifyDataSetChanged();
+        notifyDataSetChanged();//刷新页面展示
     }
 
     @Override
@@ -82,7 +86,7 @@ public class AppsAdapter extends RecyclerView.Adapter {
             appversion = (TextView) itemView.findViewById(R.id.app_version);
             delete = itemView.findViewById(R.id.delete);
             swipeMenu = (SwipeMenuLayout) itemView.findViewById(R.id.constraintLayout);
-            item_layout =  itemView.findViewById(R.id.item_layout);
+            item_layout = itemView.findViewById(R.id.item_layout);
         }
     }
 }

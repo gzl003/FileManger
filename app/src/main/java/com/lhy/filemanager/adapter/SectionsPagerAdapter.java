@@ -8,8 +8,8 @@ import java.util.List;
 
 /**
  * Created by Administrator on 2019/1/24.
+ * 首页页面适配器 用来管理展示文件管理和应用管理页面
  */
-
 public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
     private List<Fragment> fragments;
@@ -28,7 +28,7 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        // Show 3 total pages.
+
         return fragments.size();
     }
 }

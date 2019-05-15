@@ -19,7 +19,7 @@ import com.lhy.filemanager.modle.AppInfo;
 import java.util.List;
 
 /**
- * A simple {@link Fragment} subclass.
+ * 应用管理页面
  */
 public class AppFragment extends Fragment {
 
@@ -30,20 +30,9 @@ public class AppFragment extends Fragment {
     private List<AppInfo> appInfos;
 
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment AppFragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static AppFragment newInstance(String param1, String param2) {
         AppFragment fragment = new AppFragment();
         Bundle args = new Bundle();
-//        args.putString(ARG_PARAM1, param1);
-//        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -52,15 +41,21 @@ public class AppFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
     }
 
+    /**
+     * 页面初始化是被调用
+     * @param inflater 用于布局文件加载
+     * @param container
+     * @param savedInstanceState
+     * @return
+     */
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_app, container, false);
-        recyclerview = (RecyclerView) view.findViewById(R.id.recyclerview);
+
+        View view = inflater.inflate(R.layout.fragment_app, container, false);//加载布局文件
+        recyclerview = (RecyclerView) view.findViewById(R.id.recyclerview);//加载布局文件里面的控件
         progress = (ProgressBar) view.findViewById(R.id.progress);
         recyclerview.setLayoutManager(new LinearLayoutManager(mContext));
         initapps();
@@ -74,30 +69,33 @@ public class AppFragment extends Fragment {
         this.mContext = context;
     }
 
+    /**
+     * 异步 加载手机内的所有应用
+     */
     private void initapps() {
         AsyncTask<Void, Void, List<AppInfo>> asyncTask = new AsyncTask<Void, Void, List<AppInfo>>() {
 
             @Override
             protected void onPreExecute() {
                 super.onPreExecute();
-                progress.setVisibility(View.VISIBLE);
+                progress.setVisibility(View.VISIBLE);//准备执行异步加载 展示loading状态
             }
 
             @Override
             protected List<AppInfo> doInBackground(Void... voids) {
-                return AppHelper.getUserApps(mContext);
+                return AppHelper.getUserApps(mContext);//异步加载
             }
 
             @Override
             protected void onPostExecute(List<AppInfo> apps) {
                 super.onPostExecute(apps);
-                appInfos = apps;
-                progress.setVisibility(View.GONE);
-                appsAdapter = new AppsAdapter(mContext, appInfos);
-                recyclerview.setAdapter(appsAdapter);
+                appInfos = apps;//获取到所有的应用
+                progress.setVisibility(View.GONE);//隐藏进度条
+                appsAdapter = new AppsAdapter(mContext, appInfos);//创建Adapter适配器
+                recyclerview.setAdapter(appsAdapter);//设置数据到适配器展示数据
             }
         };
-        asyncTask.execute();
+        asyncTask.execute();//开始执行
     }
 
     /**
@@ -107,7 +105,7 @@ public class AppFragment extends Fragment {
         for (int i = 0; i < appInfos.size(); i++) {
             if (pake.equals(appInfos.get(i).packageName)) {
                 appInfos.remove(i);
-                appsAdapter.setAppInfos(appInfos);
+                appsAdapter.setAppInfos(appInfos);//更新页面
                 break;
             }
         }

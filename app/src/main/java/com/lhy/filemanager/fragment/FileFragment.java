@@ -51,12 +51,6 @@ public class FileFragment extends Fragment implements View.OnClickListener, File
     private SearchResultAdapter searchResultAdapter;
     private List<Map<String, Object>> aList = new ArrayList<>();
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @return A new instance of fragment FileFragment.
-     */
     public static FileFragment newInstance() {
         FileFragment fragment = new FileFragment();
         Bundle args = new Bundle();

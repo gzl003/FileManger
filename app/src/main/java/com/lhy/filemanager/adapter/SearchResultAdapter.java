@@ -11,13 +11,13 @@ import android.widget.TextView;
 
 import com.lhy.filemanager.R;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 /**
  * Created by Administrator on 2019/1/27.
+ * 搜索结果的数据展示适配器
  */
 public class SearchResultAdapter extends RecyclerView.Adapter {
     private Context mContext;
@@ -46,7 +46,7 @@ public class SearchResultAdapter extends RecyclerView.Adapter {
         if (position == 0) {
             viewHoder.search_icon.setVisibility(View.INVISIBLE);
             viewHoder.search_file.setGravity(Gravity.CENTER);
-            viewHoder.search_file.setText(getItemCount()-1 + "条 " + reslist.get(position));
+            viewHoder.search_file.setText(getItemCount() - 1 + "条 " + reslist.get(position));
         } else {
             viewHoder.search_icon.setVisibility(View.VISIBLE);
             viewHoder.search_file.setGravity(Gravity.LEFT);
